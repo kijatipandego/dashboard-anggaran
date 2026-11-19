@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Serapan Anggaran</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; padding: 30px; color: #333; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .cards { display: flex; gap: 15px; margin: 20px 0; }
+        .card { flex: 1; background: #0056b3; color: white; padding: 20px; border-radius: 8px; }
+        .card h3 { margin: 0 0 10px 0; font-size: 14px; opacity: 0.9; }
+        .card p { margin: 0; font-size: 22px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+        th { background-color: #f8f9fa; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard Monitoring Anggaran</h1>
+        <p>Terakhir diperbarui: <strong id="waktu-update">Memuat...</strong></p>
+
+        <div class="cards">
+            <div class="card">
+                <h3>Total Pagu</h3>
+                <p id="total-pagu">-</p>
+            </div>
+            <div class="card" style="background: #28a745;">
+                <h3>Total Realisasi</h3>
+                <p id="total-realisasi">-</p>
+            </div>
+            <div class="card" style="background: #17a2b8;">
+                <h3>Persentase Serapan</h3>
+                <p id="persen-serapan">-</p>
+            </div>
+        </div>
+
+        <h3>Rincian per Satuan Kerja</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama Satker</th>
+                    <th>Pagu (Rp)</th>
+                    <th>Realisasi (Rp)</th>
+                    <th>Serapan</th>
+                </tr>
+            </thead>
+            <tbody id="tabel-satker"></tbody>
+        </table>
+    </div>
+
+    <script>
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('waktu-update').innerText = data.terakhir_update;
+                document.getElementById('total-pagu').innerText = data.pagu_total;
+                document.getElementById('total-realisasi').innerText = data.realisasi_total;
+                document.getElementById('persen-serapan').innerText = data.persentase;
+
+                let barisTabel = '';
+                data.rincian_satker.forEach(item => {
+                    barisTabel += `<tr>
+                        <td>${item.nama}</td>
+                        <td>${item.pagu}</td>
+                        <td>${item.realisasi}</td>
+                        <td><strong>${item.persen}</strong></td>
+                    </tr>`;
+                });
+                document.getElementById('tabel-satker').innerHTML = barisTabel;
+            });
+    </script>
+</body>
+</html>
