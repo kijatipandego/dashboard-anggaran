@@ -1,11 +1,32 @@
 {
-  "terakhir_update": "19 November 2026, Pukul 13:30 WIB",
-  "pagu_total": "Rp 25.000.000.000",
-  "realisasi_total": "Rp 18.750.000.000",
-  "persentase": "75.00%",
+  "terakhir_update": "19 November 2026, Pukul 16:05 WIB",
+  "pagu_total": "Rp 18.916.970.000",
+  "realisasi_total": "Rp 17.577.957.471",
+  "persentase": "92.92%",
   "rincian_satker": [
-    { "nama": "Sekretariat Deputi", "pagu": "5.000.000.000", "realisasi": "4.000.000.000", "persen": "80.00%" },
-    { "nama": "Direktorat Event Nasional", "pagu": "10.000.000.000", "realisasi": "7.500.000.000", "persen": "75.00%" },
-    { "nama": "Direktorat Event Internasional", "pagu": "10.000.000.000", "realisasi": "7.250.000.000", "persen": "72.50%" }
+    {
+      "nama": "[7228] Pengembangan Wisata Pertemuan, Perjalanan Insentif, Konvensi, dan Pameran",
+      "pagu": "18.916.970.000",
+      "realisasi": "17.577.957.471",
+      "persen": "92,92 %"
+    },
+    {
+      "nama": "[7228.AEF] Sosialisasi dan Diseminasi",
+      "pagu": "2.968.695.000",
+      "realisasi": "2.459.094.561",
+      "persen": "82,83 %"
+    },
+    {
+      "nama": "[7228.PEG] Konferensi dan Event",
+      "pagu": "8.204.239.000",
+      "realisasi": "7.414.395.979",
+      "persen": "90,37 %"
+    },
+    {
+      "nama": "[7228.PEH] Promosi",
+      "pagu": "7.744.036.000",
+      "realisasi": "7.704.466.931",
+      "persen": "99,49 %"
+    }
   ]
 }
