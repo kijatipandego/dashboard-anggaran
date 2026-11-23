@@ -1,8 +1,8 @@
 {
-  "terakhir_update": "23 November 2026, Pukul 14:36 WIB",
-  "pagu_total": "Rp 173.960.142.000",
-  "realisasi_total": "Rp 146.407.112.649",
-  "persentase": "84.16%",
+  "terakhir_update": "23 November 2026, Pukul 16:23 WIB",
+  "pagu_total": "Rp 168.200.142.000",
+  "realisasi_total": "Rp 142.113.309.410",
+  "persentase": "84.49%",
   "kelompok_satker": [
     {
       "judul_header": "[7228] Pengembangan Wisata Pertemuan, Perjalanan Insentif, Konvensi, dan Pameran",
@@ -32,21 +32,15 @@
     },
     {
       "judul_header": "[7229] Pengembangan Penyelenggara Kegiatan (Events) Daerah",
-      "pagu_satker": "51.689.802.000",
-      "realisasi_satker": "45.662.886.403",
-      "persen_satker": "88,34 %",
+      "pagu_satker": "45.929.802.000",
+      "realisasi_satker": "41.369.083.164",
+      "persen_satker": "90,07 %",
       "rincian": [
         {
           "nama": "[7229.AEF] Sosialisasi dan Diseminasi",
           "pagu": "6.727.813.000",
           "realisasi": "6.726.562.656",
           "persen": "99,98 %"
-        },
-        {
-          "nama": "[7229.AEG] Konferensi dan Event",
-          "pagu": "5.760.000.000",
-          "realisasi": "4.293.803.239",
-          "persen": "74,55 %"
         },
         {
           "nama": "[7229.AEH] Promosi",
