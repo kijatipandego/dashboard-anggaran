@@ -13,9 +13,9 @@
         .card p { margin: 0; font-size: 22px; font-weight: bold; }
         
         .satker-box { background: white; padding: 20px 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
-        .satker-header { display: flex; justify-content: space-between; align-items: center; gap: 20px; border-bottom: 2px solid #f0f2f5; padding-bottom: 12px; margin-bottom: 12px; }
-        .satker-title { margin: 0; font-size: 16px; padding: 10px 15px; border-radius: 7px; flex: 1; }
-        .satker-summary { font-size: 14px; background: #f8f9fa; border: 1px solid #e9ecef; padding: 8px 14px; border-radius: 6px; color: #333; text-align: left; line-height: 1.5; white-space: nowrap; }
+        .satker-header { display: flex; justify-content: space-between; align-items: stretch; gap: 20px; border-bottom: 2px solid #f0f2f5; padding-bottom: 12px; margin-bottom: 12px; }
+        .satker-title { margin: 0; font-size: 16px; padding: 10px 15px; border-radius: 7px; flex: 1; display: flex; align-items: center; }
+        .satker-summary { font-size: 14px; background: #f8f9fa; border: 1px solid #e9ecef; padding: 8px 14px; border-radius: 6px; color: #333; text-align: left; line-height: 1.5; white-space: nowrap; display: flex; flex-direction: column; justify-content: center; }
         
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 10px 12px; border-bottom: 1px solid #eee; text-align: left; font-size: 14px; }
@@ -49,14 +49,13 @@
     </div>
 
     <script>
-        // Warna background khusus di belakang nama satker saja
         const temaWarna = [
-            { bg: '#e3f0ff', teks: '#004085' }, // Biru lembut
-            { bg: '#e6f7ec', teks: '#155724' }, // Hijau lembut
-            { bg: '#f0e8ff', teks: '#3d2070' }, // Ungu lembut
-            { bg: '#fff0e0', teks: '#8a3504' }, // Oranye lembut
-            { bg: '#e0f5f8', teks: '#0c5460' }, // Toska lembut
-            { bg: '#fce8f0', teks: '#7d153e' }  // Merah muda/Marun lembut
+            { bg: '#e3f0ff', teks: '#004085' },
+            { bg: '#e6f7ec', teks: '#155724' },
+            { bg: '#f0e8ff', teks: '#3d2070' },
+            { bg: '#fff0e0', teks: '#8a3504' },
+            { bg: '#e0f5f8', teks: '#0c5460' },
+            { bg: '#fce8f0', teks: '#7d153e' }
         ];
 
         fetch('data.json')
