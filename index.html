@@ -5,48 +5,47 @@
     <title>Dashboard Serapan Anggaran</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #f4f6f9; padding: 30px; color: #333; }
-        .container { max-width: 900px; margin: auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .cards { display: flex; gap: 15px; margin: 20px 0; }
+        .container { max-width: 960px; margin: auto; }
+        .header-utama { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 25px; }
+        .cards { display: flex; gap: 15px; margin-top: 20px; }
         .card { flex: 1; background: #0056b3; color: white; padding: 20px; border-radius: 8px; }
-        .card h3 { margin: 0 0 10px 0; font-size: 14px; opacity: 0.9; }
+        .card h3 { margin: 0 0 8px 0; font-size: 14px; opacity: 0.9; }
         .card p { margin: 0; font-size: 22px; font-weight: bold; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
-        th { background-color: #f8f9fa; }
+        
+        .satker-box { background: white; padding: 20px 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; border-left: 5px solid #0056b3; }
+        .satker-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f2f5; padding-bottom: 12px; margin-bottom: 12px; }
+        .satker-title { margin: 0; font-size: 17px; color: #0056b3; }
+        .satker-summary { font-size: 14px; background: #eef4ff; padding: 6px 12px; border-radius: 6px; color: #1a3b6e; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px 12px; border-bottom: 1px solid #eee; text-align: left; font-size: 14px; }
+        th { background-color: #f8f9fa; color: #555; }
+        .angka { text-align: right; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Dashboard Monitoring Anggaran</h1>
-        <p>Terakhir diperbarui: <strong id="waktu-update">Memuat...</strong></p>
+        <div class="header-utama">
+            <h1 style="margin-top:0;">Dashboard Monitoring Anggaran</h1>
+            <p style="margin-bottom:0; color:#666;">Terakhir diperbarui: <strong id="waktu-update">Memuat...</strong></p>
 
-        <div class="cards">
-            <div class="card">
-                <h3>Total Pagu</h3>
-                <p id="total-pagu">-</p>
-            </div>
-            <div class="card" style="background: #28a745;">
-                <h3>Total Realisasi</h3>
-                <p id="total-realisasi">-</p>
-            </div>
-            <div class="card" style="background: #17a2b8;">
-                <h3>Persentase Serapan</h3>
-                <p id="persen-serapan">-</p>
+            <div class="cards">
+                <div class="card">
+                    <h3>Total Pagu Keseluruhan</h3>
+                    <p id="total-pagu">-</p>
+                </div>
+                <div class="card" style="background: #28a745;">
+                    <h3>Total Realisasi Keseluruhan</h3>
+                    <p id="total-realisasi">-</p>
+                </div>
+                <div class="card" style="background: #17a2b8;">
+                    <h3>Persentase Serapan Total</h3>
+                    <p id="persen-serapan">-</p>
+                </div>
             </div>
         </div>
 
-        <h3>Rincian per Satuan Kerja</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nama Satker</th>
-                    <th>Pagu (Rp)</th>
-                    <th>Realisasi (Rp)</th>
-                    <th>Serapan</th>
-                </tr>
-            </thead>
-            <tbody id="tabel-satker"></tbody>
-        </table>
+        <div id="wadah-satker"></div>
     </div>
 
     <script>
@@ -58,16 +57,42 @@
                 document.getElementById('total-realisasi').innerText = data.realisasi_total;
                 document.getElementById('persen-serapan').innerText = data.persentase;
 
-                let barisTabel = '';
-                data.rincian_satker.forEach(item => {
-                    barisTabel += `<tr>
-                        <td>${item.nama}</td>
-                        <td>${item.pagu}</td>
-                        <td>${item.realisasi}</td>
-                        <td><strong>${item.persen}</strong></td>
-                    </tr>`;
+                let htmlSatker = '';
+                data.kelompok_satker.forEach(satker => {
+                    let barisOutput = '';
+                    satker.rincian.forEach(item => {
+                        barisOutput += `<tr>
+                            <td>${item.nama}</td>
+                            <td class="angka">${item.pagu}</td>
+                            <td class="angka">${item.realisasi}</td>
+                            <td class="angka"><strong>${item.persen}</strong></td>
+                        </tr>`;
+                    });
+
+                    htmlSatker += `
+                    <div class="satker-box">
+                        <div class="satker-header">
+                            <h2 class="satker-title">${satker.judul_header}</h2>
+                            <div class="satker-summary">
+                                Pagu: <strong>${satker.pagu_satker}</strong> | 
+                                Realisasi: <strong>${satker.realisasi_satker}</strong> 
+                                (<strong>${satker.persen_satker}</strong>)
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Rincian Output / Sub-Komponen</th>
+                                    <th class="angka">Pagu (Rp)</th>
+                                    <th class="angka">Realisasi (Rp)</th>
+                                    <th class="angka">Serapan</th>
+                                </tr>
+                            </thead>
+                            <tbody>${barisOutput}</tbody>
+                        </table>
+                    </div>`;
                 });
-                document.getElementById('tabel-satker').innerHTML = barisTabel;
+                document.getElementById('wadah-satker').innerHTML = htmlSatker;
             });
     </script>
 </body>
