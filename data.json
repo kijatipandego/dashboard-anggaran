@@ -1,14 +1,14 @@
 {
-  "terakhir_update": "19 November 2026, Pukul 16:05 WIB",
-  "pagu_total": "Rp 18.916.970.000",
-  "realisasi_total": "Rp 17.577.957.471",
-  "persentase": "92.92%",
+  "terakhir_update": "23 November 2026, Pukul 13:58 WIB",
+  "pagu_total": "Rp 173.960.142.000",
+  "realisasi_total": "Rp 146.407.112.649",
+  "persentase": "84.16%",
   "rincian_satker": [
     {
       "nama": "[7228] Pengembangan Wisata Pertemuan, Perjalanan Insentif, Konvensi, dan Pameran",
       "pagu": "18.916.970.000",
-      "realisasi": "17.577.957.471",
-      "persen": "92,92 %"
+      "realisasi": "17.643.872.471",
+      "persen": "93,27 %"
     },
     {
       "nama": "[7228.AEF] Sosialisasi dan Diseminasi",
@@ -19,14 +19,152 @@
     {
       "nama": "[7228.PEG] Konferensi dan Event",
       "pagu": "8.204.239.000",
-      "realisasi": "7.414.395.979",
-      "persen": "90,37 %"
+      "realisasi": "7.480.310.979",
+      "persen": "91,18 %"
     },
     {
       "nama": "[7228.PEH] Promosi",
       "pagu": "7.744.036.000",
       "realisasi": "7.704.466.931",
       "persen": "99,49 %"
+    },
+    {
+      "nama": "[7229] Pengembangan Penyelenggara Kegiatan (Events) Daerah",
+      "pagu": "51.689.802.000",
+      "realisasi": "45.662.886.403",
+      "persen": "88,34 %"
+    },
+    {
+      "nama": "[7229.AEF] Sosialisasi dan Diseminasi",
+      "pagu": "6.727.813.000",
+      "realisasi": "6.726.562.656",
+      "persen": "99,98 %"
+    },
+    {
+      "nama": "[7229.AEG] Konferensi dan Event",
+      "pagu": "5.760.000.000",
+      "realisasi": "4.293.803.239",
+      "persen": "74,55 %"
+    },
+    {
+      "nama": "[7229.AEH] Promosi",
+      "pagu": "5.484.496.000",
+      "realisasi": "4.484.285.500",
+      "persen": "81,76 %"
+    },
+    {
+      "nama": "[7229.PEG] Konferensi dan Event",
+      "pagu": "33.717.493.000",
+      "realisasi": "30.158.235.008",
+      "persen": "89,44 %"
+    },
+    {
+      "nama": "[7230] Pengembangan Penyelenggara Kegiatan (Events) Nasional",
+      "pagu": "66.272.286.000",
+      "realisasi": "53.532.713.040",
+      "persen": "80,78 %"
+    },
+    {
+      "nama": "[7230.AEF] Sosialisasi dan Diseminasi",
+      "pagu": "8.702.342.000",
+      "realisasi": "8.102.154.347",
+      "persen": "93,10 %"
+    },
+    {
+      "nama": "[7230.AEH] Promosi",
+      "pagu": "3.471.597.000",
+      "realisasi": "3.213.257.009",
+      "persen": "92,56 %"
+    },
+    {
+      "nama": "[7230.PEG] Konferensi dan Event",
+      "pagu": "54.098.347.000",
+      "realisasi": "42.217.301.684",
+      "persen": "78,04 %"
+    },
+    {
+      "nama": "[7231] Pengembangan Penyelenggara Kegiatan (Events) Internasional",
+      "pagu": "26.453.247.000",
+      "realisasi": "20.898.182.181",
+      "persen": "79,00 %"
+    },
+    {
+      "nama": "[7231.AEF] Sosialisasi dan Diseminasi",
+      "pagu": "2.442.357.000",
+      "realisasi": "1.621.266.411",
+      "persen": "66,38 %"
+    },
+    {
+      "nama": "[7231.AEH] Promosi",
+      "pagu": "9.190.940.000",
+      "realisasi": "7.896.450.501",
+      "persen": "85,92 %"
+    },
+    {
+      "nama": "[7231.AFA] Norma, Standard, Prosedur dan Kriteria",
+      "pagu": "765.961.000",
+      "realisasi": "426.565.502",
+      "persen": "55,69 %"
+    },
+    {
+      "nama": "[7231.PEG] Konferensi dan Event",
+      "pagu": "14.053.989.000",
+      "realisasi": "10.953.899.767",
+      "persen": "77,94 %"
+    },
+    {
+      "nama": "[7832] Pengembangan Strategi Events",
+      "pagu": "2.829.477.000",
+      "realisasi": "2.134.634.976",
+      "persen": "75,44 %"
+    },
+    {
+      "nama": "[7832.AEG] Konferensi dan Event",
+      "pagu": "610.584.000",
+      "realisasi": "392.639.827",
+      "persen": "64,31 %"
+    },
+    {
+      "nama": "[7832.AFA] Norma, Standard, Prosedur dan Kriteria",
+      "pagu": "200.352.000",
+      "realisasi": "101.619.592",
+      "persen": "50,72 %"
+    },
+    {
+      "nama": "[7832.FAB] Sistem Informasi Pemerintahan",
+      "pagu": "340.249.000",
+      "realisasi": "325.435.557",
+      "persen": "95,65 %"
+    },
+    {
+      "nama": "[7832.PBA] Kebijakan Bidang Ekonomi dan Keuangan",
+      "pagu": "1.678.292.000",
+      "realisasi": "1.314.940.000",
+      "persen": "78,35 %"
+    },
+    {
+      "nama": "[7245] Dukungan Manajemen dan Dukungan Teknis Lainnya Deputi Bidang Pengembangan Penyelenggara Kegiatan (Events)",
+      "pagu": "7.798.360.000",
+      "realisasi": "6.534.823.578",
+      "persen": "83,80 %"
+    },
+    {
+      "nama": "[7245.EBA] Layanan Dukungan Manajemen Internal",
+      "pagu": "6.514.528.000",
+      "realisasi": "5.472.252.031",
+      "persen": "84,00 %"
+    },
+    {
+      "nama": "[7245.EBB] Layanan Sarana dan Prasarana Internal",
+      "pagu": "65.379.000",
+      "realisasi": "65.286.200",
+      "persen": "99,86 %"
+    },
+    {
+      "nama": "[7245.EBD] Layanan Manajemen Kinerja Internal",
+      "pagu": "1.218.453.000",
+      "realisasi": "997.285.347",
+      "persen": "81,85 %"
     }
   ]
 }
