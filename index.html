@@ -12,14 +12,14 @@
         .card h3 { margin: 0 0 8px 0; font-size: 14px; opacity: 0.9; }
         .card p { margin: 0; font-size: 22px; font-weight: bold; }
         
-        .satker-box { background: white; padding: 20px 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; border-left: 5px solid #0056b3; }
-        .satker-header { display: flex; justify-content: space-between; align-items: center; gap: 20px; border-bottom: 2px solid #f0f2f5; padding-bottom: 12px; margin-bottom: 12px; }
-        .satker-title { margin: 0; font-size: 17px; color: #0056b3; flex: 1; }
-        .satker-summary { font-size: 14px; background: #eef4ff; padding: 8px 14px; border-radius: 6px; color: #1a3b6e; text-align: left; line-height: 1.5; white-space: nowrap; }
+        .satker-box { padding: 20px 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; border-left: 6px solid #0056b3; }
+        .satker-header { display: flex; justify-content: space-between; align-items: center; gap: 20px; border-bottom: 2px solid rgba(0,0,0,0.07); padding-bottom: 12px; margin-bottom: 12px; }
+        .satker-title { margin: 0; font-size: 17px; flex: 1; }
+        .satker-summary { font-size: 14px; background: rgba(255,255,255,0.85); padding: 8px 14px; border-radius: 6px; text-align: left; line-height: 1.5; white-space: nowrap; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 10px 12px; border-bottom: 1px solid #eee; text-align: left; font-size: 14px; }
-        th { background-color: #f8f9fa; color: #555; }
+        table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.7); border-radius: 6px; overflow: hidden; }
+        th, td { padding: 10px 12px; border-bottom: 1px solid rgba(0,0,0,0.06); text-align: left; font-size: 14px; }
+        th { background-color: rgba(0,0,0,0.04); color: #444; }
         .angka { text-align: right; }
     </style>
 </head>
@@ -49,6 +49,16 @@
     </div>
 
     <script>
+        // Daftar 6 tema warna lembut untuk masing-masing satker
+        const temaWarna = [
+            { bg: '#eef5ff', aksen: '#0056b3', teks: '#004085' }, // Biru lembut
+            { bg: '#eefaf1', aksen: '#1e7e34', teks: '#155724' }, // Hijau lembut
+            { bg: '#f4effc', aksen: '#5a32a3', teks: '#3d2070' }, // Ungu lembut
+            { bg: '#fff5eb', aksen: '#c9510c', teks: '#8a3504' }, // Oranye lembut
+            { bg: '#ebf8fa', aksen: '#117a8b', teks: '#0c5460' }, // Toska lembut
+            { bg: '#fdf0f5', aksen: '#b8255f', teks: '#7d153e' }  // Merah muda/Marun lembut
+        ];
+
         fetch('data.json')
             .then(response => response.json())
             .then(data => {
@@ -58,7 +68,8 @@
                 document.getElementById('persen-serapan').innerText = data.persentase;
 
                 let htmlSatker = '';
-                data.kelompok_satker.forEach(satker => {
+                data.kelompok_satker.forEach((satker, index) => {
+                    const warna = temaWarna[index % temaWarna.length];
                     let barisOutput = '';
                     satker.rincian.forEach(item => {
                         barisOutput += `<tr>
@@ -70,10 +81,10 @@
                     });
 
                     htmlSatker += `
-                    <div class="satker-box">
+                    <div class="satker-box" style="background-color: ${warna.bg}; border-left-color: ${warna.aksen};">
                         <div class="satker-header">
-                            <h2 class="satker-title">${satker.judul_header}</h2>
-                            <div class="satker-summary">
+                            <h2 class="satker-title" style="color: ${warna.teks};">${satker.judul_header}</h2>
+                            <div class="satker-summary" style="color: ${warna.teks};">
                                 <div>Pagu: <strong>Rp ${satker.pagu_satker}</strong></div>
                                 <div>Realisasi: <strong>Rp ${satker.realisasi_satker} (${satker.persen_satker})</strong></div>
                             </div>
