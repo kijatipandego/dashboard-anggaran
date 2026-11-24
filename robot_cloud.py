@@ -5,9 +5,7 @@ import time
 from datetime import datetime, timezone, timedelta
 from playwright.sync_api import sync_playwright
 
-# Penyambungan string URL agar 100% aman dari pemotongan format
 BASE_URL = "https://kemenkeu.go.id"
-LOGIN_URL = BASE_URL + "/login?q=0e8b2"
 REPORT_URL = BASE_URL + "/laporan?q=Realisasi&l=Dept-Output&w=147"
 
 SATUDJA_USER = os.environ.get("SATUDJA_USER", "")
@@ -19,7 +17,9 @@ EXCLUDE_SUBOUTPUT = "7229.AEG"
 def clean_number(text):
     if not text:
         return 0
-    cleaned = re.sub(r"[^\d-]", "", str(text).split(",")[0])
+    # Ambil bagian sebelum koma desimal jika ada, lalu bersihkan selain angka & minus
+    main_part = str(text).split(",")[0]
+    cleaned = re.sub(r"[^\d-]", "", main_part)
     try:
         return int(cleaned) if cleaned else 0
     except ValueError:
@@ -34,7 +34,6 @@ def run_scraper():
         raise ValueError("SATUDJA_USER atau SATUDJA_PASS kosong di GitHub Secrets.")
 
     with sync_playwright() as p:
-        # 1. Penyamaran identitas browser Windows asli
         browser = p.chromium.launch(
             headless=True,
             args=[
@@ -62,16 +61,29 @@ def run_scraper():
         page = context.new_page()
 
         try:
-            # TAHAP 1: Buka Halaman Login
-            print(f"[{get_wib_timestamp()}] Membuka halaman login: {LOGIN_URL}")
-            page.goto(LOGIN_URL, wait_until="domcontentloaded", timeout=60000)
-            time.sleep(5)  # Beri waktu ekstra jika ada loading JS/redirect
-            page.screenshot(path="bukti1_layar.png", full_page=True)
-            print("Foto layar tahap 1 disimpan: bukti1_layar.png")
+            # TAHAP 1: Buka Beranda SatuDJA & Klik Tombol Login di Pojok Kanan Atas
+            print(f"[{get_wib_timestamp()}] Membuka beranda SatuDJA: {BASE_URL}")
+            page.goto(BASE_URL, wait_until="domcontentloaded", timeout=60000)
+            time.sleep(4)
 
-            # Cari kolom username dan password
-            user_input = page.locator('input[type="text"], input[name*="user"], input[id*="user"]').first
-            user_input.wait_for(state="visible", timeout=35000)
+            print("Mencari tombol Login di navbar atas...")
+            login_nav_btn = page.locator(
+                'a:has-text("Login"), button:has-text("Login"), '
+                'a:has-text("Masuk"), button:has-text("Masuk"), a[href*="login"]'
+            ).first
+            login_nav_btn.wait_for(state="visible", timeout=20000)
+            login_nav_btn.click()
+
+            time.sleep(4)
+            page.screenshot(path="bukti_form_login.png", full_page=True)
+            print("Foto form login disimpan: bukti_form_login.png")
+
+            # TAHAP 2: Isi Kredensial pada Form Login
+            user_input = page.locator(
+                'input[type="text"], input[type="email"], '
+                'input[name*="user"], input[id*="user"], input[placeholder*="User"], input[placeholder*="NIP"]'
+            ).first
+            user_input.wait_for(state="visible", timeout=25000)
             pass_input = page.locator('input[type="password"]').first
 
             print("Mengisi username dan password...")
@@ -80,22 +92,19 @@ def run_scraper():
 
             submit_btn = page.locator(
                 'button[type="submit"], input[type="submit"], '
-                'button:has-text("Login"), button:has-text("Masuk")'
-            ).first
+                'button:has-text("Login"), button:has-text("Masuk"), button:has-text("Sign In")'
+            ).last
             if submit_btn.count() > 0:
                 submit_btn.click()
             else:
                 pass_input.press("Enter")
 
-            # TAHAP 2: Verifikasi Hasil Login
+            # TAHAP 3: Verifikasi Masuk Dashboard
             time.sleep(6)
-            page.screenshot(path="bukti2_layar.png", full_page=True)
-            print("Foto layar tahap 2 disimpan: bukti2_layar.png")
+            page.screenshot(path="bukti_setelah_login.png", full_page=True)
+            print(f"Foto setelah login disimpan. URL saat ini: {page.url}")
 
-            if "login" in page.url.lower():
-                raise RuntimeError("Masih tertahan di halaman login. Cek bukti1_layar.png dan bukti2_layar.png.")
-
-            # TAHAP 3: Buka Halaman Laporan Induk & Auto-Scroll
+            # TAHAP 4: Buka Halaman Laporan Induk & Auto-Scroll
             print(f"[{get_wib_timestamp()}] Membuka halaman laporan induk...")
             page.goto(REPORT_URL, wait_until="domcontentloaded", timeout=60000)
             page.wait_for_selector("table tbody tr", timeout=45000)
@@ -118,10 +127,10 @@ def run_scraper():
                     break
                 previous_height = current_height
 
-            page.screenshot(path="bukti3_layar.png", full_page=True)
-            print("Foto layar tahap 3 disimpan: bukti3_layar.png")
+            page.screenshot(path="bukti_tabel_laporan.png", full_page=True)
+            print("Foto tabel laporan disimpan: bukti_tabel_laporan.png")
 
-            # TAHAP 4: Ekstraksi & Filter Data
+            # TAHAP 5: Ekstraksi & Filter Data
             raw_rows = page.evaluate("""
                 () => Array.from(document.querySelectorAll('table tbody tr')).map(tr =>
                     Array.from(tr.querySelectorAll('td, th')).map(td => td.innerText.trim())
