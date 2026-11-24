@@ -6,6 +6,7 @@ from datetime import datetime, timezone, timedelta
 from playwright.sync_api import sync_playwright
 
 BASE_URL = "https://kemenkeu.go.id"
+LOGIN_URL = BASE_URL + "/login?q=0e8b2"
 REPORT_URL = BASE_URL + "/laporan?q=Realisasi&l=Dept-Output&w=147"
 
 SATUDJA_USER = os.environ.get("SATUDJA_USER", "")
@@ -17,7 +18,6 @@ EXCLUDE_SUBOUTPUT = "7229.AEG"
 def clean_number(text):
     if not text:
         return 0
-    # Ambil bagian sebelum koma desimal jika ada, lalu bersihkan selain angka & minus
     main_part = str(text).split(",")[0]
     cleaned = re.sub(r"[^\d-]", "", main_part)
     try:
@@ -52,7 +52,11 @@ def run_scraper():
             ),
             viewport={"width": 1920, "height": 1080},
             locale="id-ID",
-            timezone_id="Asia/Jakarta"
+            timezone_id="Asia/Jakarta",
+            extra_http_headers={
+                "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
+                "Referer": BASE_URL + "/"
+            }
         )
 
         context.add_init_script(
@@ -61,48 +65,37 @@ def run_scraper():
         page = context.new_page()
 
         try:
-            # TAHAP 1: Buka Beranda SatuDJA & Klik Tombol Login di Pojok Kanan Atas
-            print(f"[{get_wib_timestamp()}] Membuka beranda SatuDJA: {BASE_URL}")
+            # TAHAP 1: Buka Beranda dulu untuk memicu session cookie, lalu tembak LOGIN_URL
+            print(f"[{get_wib_timestamp()}] Menginisialisasi sesi SatuDJA...")
             page.goto(BASE_URL, wait_until="domcontentloaded", timeout=60000)
-            time.sleep(4)
+            time.sleep(3)
 
-            print("Mencari tombol Login di navbar atas...")
-            login_nav_btn = page.locator(
-                'a:has-text("Login"), button:has-text("Login"), '
-                'a:has-text("Masuk"), button:has-text("Masuk"), a[href*="login"]'
-            ).first
-            login_nav_btn.wait_for(state="visible", timeout=20000)
-            login_nav_btn.click()
-
+            print(f"Membuka halaman login langsung: {LOGIN_URL}")
+            page.goto(LOGIN_URL, wait_until="domcontentloaded", timeout=60000)
             time.sleep(4)
             page.screenshot(path="bukti_form_login.png", full_page=True)
-            print("Foto form login disimpan: bukti_form_login.png")
+            print(f"URL saat ini: {page.url} | Foto disimpan: bukti_form_login.png")
 
-            # TAHAP 2: Isi Kredensial pada Form Login
-            user_input = page.locator(
-                'input[type="text"], input[type="email"], '
-                'input[name*="user"], input[id*="user"], input[placeholder*="User"], input[placeholder*="NIP"]'
-            ).first
-            user_input.wait_for(state="visible", timeout=25000)
-            pass_input = page.locator('input[type="password"]').first
+            # TAHAP 2: Isi Kolom 'User ID' dan 'Password' sesuai struktur layar asli SatuDJA
+            user_input = page.locator('input[placeholder*="User"], input[type="text"]').first
+            user_input.wait_for(state="visible", timeout=20000)
+            pass_input = page.locator('input[placeholder*="Password"], input[type="password"]').first
 
-            print("Mengisi username dan password...")
+            print("Mengisi User ID dan Password...")
             user_input.fill(SATUDJA_USER)
             pass_input.fill(SATUDJA_PASS)
 
-            submit_btn = page.locator(
-                'button[type="submit"], input[type="submit"], '
-                'button:has-text("Login"), button:has-text("Masuk"), button:has-text("Sign In")'
-            ).last
-            if submit_btn.count() > 0:
-                submit_btn.click()
-            else:
-                pass_input.press("Enter")
+            # Klik tombol biru 'Login'
+            submit_btn = page.locator('button:has-text("Login"), input[type="submit"], button[type="submit"]').first
+            submit_btn.click()
 
             # TAHAP 3: Verifikasi Masuk Dashboard
             time.sleep(6)
             page.screenshot(path="bukti_setelah_login.png", full_page=True)
-            print(f"Foto setelah login disimpan. URL saat ini: {page.url}")
+            print(f"URL setelah klik Login: {page.url}")
+
+            if "login" in page.url.lower():
+                raise RuntimeError("Masih berada di halaman login. Cek bukti_setelah_login.png.")
 
             # TAHAP 4: Buka Halaman Laporan Induk & Auto-Scroll
             print(f"[{get_wib_timestamp()}] Membuka halaman laporan induk...")
