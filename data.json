@@ -1,176 +1,50 @@
 {
-  "terakhir_update": "24 November 2026, Pukul 12:59 WIB",
-  "pagu_total": "Rp 168.200.142.000",
-  "realisasi_total": "Rp 142.632.499.018",
-  "persentase": "84.80%",
+  "terakhir_update": "24 November 2026, Pukul 14:53 WIB",
+  "pagu_total": "Rp 0",
+  "realisasi_total": "Rp 0",
+  "persentase": "0.00%",
   "kelompok_satker": [
     {
       "judul_header": "[7228] Pengembangan Wisata Pertemuan, Perjalanan Insentif, Konvensi, dan Pameran",
-      "pagu_satker": "18.916.970.000",
-      "realisasi_satker": "17.692.872.471",
-      "persen_satker": "93,53 %",
-      "rincian": [
-        {
-          "nama": "[7228.AEF] Sosialisasi dan Diseminasi",
-          "pagu": "2.968.695.000",
-          "realisasi": "2.459.094.561",
-          "persen": "82,83 %"
-        },
-        {
-          "nama": "[7228.PEG] Konferensi dan Event",
-          "pagu": "8.204.239.000",
-          "realisasi": "7.529.310.979",
-          "persen": "91,77 %"
-        },
-        {
-          "nama": "[7228.PEH] Promosi",
-          "pagu": "7.744.036.000",
-          "realisasi": "7.704.466.931",
-          "persen": "99,49 %"
-        }
-      ]
+      "pagu_satker": "0",
+      "realisasi_satker": "0",
+      "persen_satker": "0,00 %",
+      "rincian": []
     },
     {
       "judul_header": "[7229] Pengembangan Penyelenggara Kegiatan (Events) Daerah",
-      "pagu_satker": "45.929.802.000",
-      "realisasi_satker": "41.369.083.164",
-      "persen_satker": "90,07 %",
-      "rincian": [
-        {
-          "nama": "[7229.AEF] Sosialisasi dan Diseminasi",
-          "pagu": "6.727.813.000",
-          "realisasi": "6.726.562.656",
-          "persen": "99,98 %"
-        },
-        {
-          "nama": "[7229.AEH] Promosi",
-          "pagu": "5.484.496.000",
-          "realisasi": "4.484.285.500",
-          "persen": "81,76 %"
-        },
-        {
-          "nama": "[7229.PEG] Konferensi dan Event",
-          "pagu": "33.717.493.000",
-          "realisasi": "30.158.235.008",
-          "persen": "89,44 %"
-        }
-      ]
+      "pagu_satker": "0",
+      "realisasi_satker": "0",
+      "persen_satker": "0,00 %",
+      "rincian": []
     },
     {
       "judul_header": "[7230] Pengembangan Penyelenggara Kegiatan (Events) Nasional",
-      "pagu_satker": "66.272.286.000",
-      "realisasi_satker": "53.866.458.548",
-      "persen_satker": "81,28 %",
-      "rincian": [
-        {
-          "nama": "[7230.AEF] Sosialisasi dan Diseminasi",
-          "pagu": "8.702.342.000",
-          "realisasi": "8.102.154.347",
-          "persen": "93,10 %"
-        },
-        {
-          "nama": "[7230.AEH] Promosi",
-          "pagu": "3.471.597.000",
-          "realisasi": "3.213.257.009",
-          "persen": "92,56 %"
-        },
-        {
-          "nama": "[7230.PEG] Konferensi dan Event",
-          "pagu": "54.098.347.000",
-          "realisasi": "42.551.047.192",
-          "persen": "78,65 %"
-        }
-      ]
+      "pagu_satker": "0",
+      "realisasi_satker": "0",
+      "persen_satker": "0,00 %",
+      "rincian": []
     },
     {
       "judul_header": "[7231] Pengembangan Penyelenggara Kegiatan (Events) Internasional",
-      "pagu_satker": "26.453.247.000",
-      "realisasi_satker": "20.898.182.181",
-      "persen_satker": "79,00 %",
-      "rincian": [
-        {
-          "nama": "[7231.AEF] Sosialisasi dan Diseminasi",
-          "pagu": "2.442.357.000",
-          "realisasi": "1.621.266.411",
-          "persen": "66,38 %"
-        },
-        {
-          "nama": "[7231.AEH] Promosi",
-          "pagu": "9.190.940.000",
-          "realisasi": "7.896.450.501",
-          "persen": "85,92 %"
-        },
-        {
-          "nama": "[7231.AFA] Norma, Standard, Prosedur dan Kriteria",
-          "pagu": "765.961.000",
-          "realisasi": "426.565.502",
-          "persen": "55,69 %"
-        },
-        {
-          "nama": "[7231.PEG] Konferensi dan Event",
-          "pagu": "14.053.989.000",
-          "realisasi": "10.953.899.767",
-          "persen": "77,94 %"
-        }
-      ]
+      "pagu_satker": "0",
+      "realisasi_satker": "0",
+      "persen_satker": "0,00 %",
+      "rincian": []
     },
     {
       "judul_header": "[7832] Pengembangan Strategi Events",
-      "pagu_satker": "2.829.477.000",
-      "realisasi_satker": "2.267.679.076",
-      "persen_satker": "80,14 %",
-      "rincian": [
-        {
-          "nama": "[7832.AEG] Konferensi dan Event",
-          "pagu": "610.584.000",
-          "realisasi": "525.683.927",
-          "persen": "86,10 %"
-        },
-        {
-          "nama": "[7832.AFA] Norma, Standard, Prosedur dan Kriteria",
-          "pagu": "200.352.000",
-          "realisasi": "101.619.592",
-          "persen": "50,72 %"
-        },
-        {
-          "nama": "[7832.FAB] Sistem Informasi Pemerintahan",
-          "pagu": "340.249.000",
-          "realisasi": "325.435.557",
-          "persen": "95,65 %"
-        },
-        {
-          "nama": "[7832.PBA] Kebijakan Bidang Ekonomi dan Keuangan",
-          "pagu": "1.678.292.000",
-          "realisasi": "1.314.940.000",
-          "persen": "78,35 %"
-        }
-      ]
+      "pagu_satker": "0",
+      "realisasi_satker": "0",
+      "persen_satker": "0,00 %",
+      "rincian": []
     },
     {
       "judul_header": "[7245] Dukungan Manajemen dan Dukungan Teknis Lainnya Deputi Bidang Pengembangan Penyelenggara Kegiatan (Events)",
-      "pagu_satker": "7.798.360.000",
-      "realisasi_satker": "6.538.223.578",
-      "persen_satker": "83,84 %",
-      "rincian": [
-        {
-          "nama": "[7245.EBA] Layanan Dukungan Manajemen Internal",
-          "pagu": "6.514.528.000",
-          "realisasi": "5.475.652.031",
-          "persen": "84,05 %"
-        },
-        {
-          "nama": "[7245.EBB] Layanan Sarana dan Prasarana Internal",
-          "pagu": "65.379.000",
-          "realisasi": "65.286.200",
-          "persen": "99,86 %"
-        },
-        {
-          "nama": "[7245.EBD] Layanan Manajemen Kinerja Internal",
-          "pagu": "1.218.453.000",
-          "realisasi": "997.285.347",
-          "persen": "81,85 %"
-        }
-      ]
+      "pagu_satker": "0",
+      "realisasi_satker": "0",
+      "persen_satker": "0,00 %",
+      "rincian": []
     }
   ]
 }
