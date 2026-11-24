@@ -1,0 +1,52 @@
+name: Eksperimen Robot SatuDJA
+
+on:
+  schedule:
+    - cron: '0 1,5,9 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  jalankan-robot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Playwright & Chromium
+        run: |
+          pip install playwright
+          playwright install chromium
+          playwright install-deps chromium
+
+      - name: Jalankan Robot SatuDJA
+        env:
+          SATUDJA_USER: ${{ secrets.SATUDJA_USER }}
+          SATUDJA_PASS: ${{ secrets.SATUDJA_PASS }}
+        run: |
+          python robot_cloud.py
+
+      - name: Upload Foto Layar Bukti (Selalu Jalan)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bukti-layar-satudja
+          path: bukti*.png
+          if-no-files-found: ignore
+
+      - name: Simpan data.json ke GitHub Pages
+        if: success()
+        run: |
+          git config --local user.email "github-actions[bot]@://github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update data anggaran SatuDJA" && git push)
