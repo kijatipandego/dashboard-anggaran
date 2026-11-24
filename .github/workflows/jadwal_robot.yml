@@ -1,0 +1,40 @@
+name: Update Otomatis Data SatuDJA
+
+on:
+  schedule:
+    # Jalan otomatis Senin-Jumat pukul 07:30 WIB (00:30 UTC) dan 13:30 WIB (06:30 UTC)
+    - cron: '30 0,6 * * 1-5'
+  workflow_dispatch: # Tombol manual agar bisa dites kapan saja
+
+permissions:
+  contents: write
+
+jobs:
+  tarik-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ambil kode repositori
+        uses: actions/checkout@v4
+
+      - name: Siapkan Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instal Playwright & Chromium
+        run: |
+          pip install playwright
+          playwright install chromium
+
+      - name: Jalankan Robot SatuDJA
+        env:
+          SATUDJA_USER: ${{ secrets.SATUDJA_USER }}
+          SATUDJA_PASS: ${{ secrets.SATUDJA_PASS }}
+        run: python robot_cloud.py
+
+      - name: Simpan data.json baru ke GitHub
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "Robot SatuDJA"
+          git add data.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update otomatis jadwal SatuDJA" && git push)
