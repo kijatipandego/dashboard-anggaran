@@ -24,7 +24,6 @@
     .btn-export { background: #fff; color: var(--navy); border: none; padding: 9px 15px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; }
     .btn-export:hover { background: #f1f5f9; }
 
-    /* MENU TAB NAVIGASI */
     .nav-tabs { max-width: 1340px; margin: 0 auto; display: flex; gap: 6px; overflow-x: auto; }
     .tab-btn { background: rgba(255,255,255,0.1); color: #cbd5e1; border: none; padding: 11px 20px; border-radius: 10px 10px 0 0; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s; white-space: nowrap; }
     .tab-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
@@ -56,8 +55,8 @@
     .satker-title { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
     .progress-track { width: 100%; max-width: 420px; height: 8px; background: #e2e8f0; border-radius: 99px; overflow: hidden; }
     .progress-fill { height: 100%; border-radius: 99px; transition: width 0.4s ease; }
-    .satker-summary-right { text-align: left; min-width: 260px; background: #fff; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); font-size: 13px; }
-    .summary-line { display: flex; justify-content: space-between; gap: 14px; margin-bottom: 3px; }
+    .satker-summary-right { text-align: left; min-width: 280px; background: #fff; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); font-size: 13px; }
+    .summary-line { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 3px; }
     .summary-line:last-child { margin-bottom: 0; }
     .summary-line span.lbl { color: var(--muted); font-weight: 600; }
     .summary-line span.val { font-weight: 700; color: var(--text); }
@@ -102,7 +101,6 @@
       <div>Pembaruan Terakhir: <strong id="lastUpdated">Memuat data...</strong></div>
     </div>
 
-    <!-- TAB 1: REALISASI ANGGARAN -->
     <div id="tab-realisasi" class="tab-panel active">
       <section class="kpi-grid">
         <div class="kpi-card kpi-pagu"><div class="kpi-label">Total Pagu Efektif</div><div class="kpi-value" id="kpiPagu">Rp 0</div><div class="kpi-sub" id="kpiPaguSub">6 Eselon II / Kegiatan Utama</div></div>
@@ -121,30 +119,28 @@
       <div id="satkerContainer"></div>
     </div>
 
-    <!-- TAB 2: REVISI DIPA -->
     <div id="tab-revisi" class="tab-panel">
       <section class="kpi-grid">
-        <div class="kpi-card kpi-pagu"><div class="kpi-label">Status DIPA Aktif</div><div class="kpi-value" id="revStatus">DIPA Petikan T.A. 2026</div><div class="kpi-sub">Satker 694451</div></div>
-        <div class="kpi-card kpi-real"><div class="kpi-label">Pagu Efektif Saat Ini</div><div class="kpi-value" id="revPaguAktif" style="color:var(--green);">Rp 0</div><div class="kpi-sub">Sesuai penarikan SatuDJA terakhir</div></div>
-        <div class="kpi-card kpi-sisa"><div class="kpi-label">Total Frekuensi Revisi</div><div class="kpi-value" id="revJumlah" style="color:var(--amber);">0 Kali</div><div class="kpi-sub">Tercatat di riwayat DIPA</div></div>
+        <div class="kpi-card kpi-pagu"><div class="kpi-label">Satker Eselon I</div><div class="kpi-value" style="font-size:18px;">694451 — Deputi Events</div><div class="kpi-sub">DIPA Petikan T.A. 2026</div></div>
+        <div class="kpi-card kpi-real"><div class="kpi-label">Pagu Revisi Terakhir</div><div class="kpi-value" id="revPaguAktif" style="color:var(--green);">Rp 0</div><div class="kpi-sub">Sesuai penarikan SatuDJA</div></div>
+        <div class="kpi-card kpi-sisa"><div class="kpi-label">Total Riwayat Revisi</div><div class="kpi-value" id="revJumlah" style="color:var(--amber);">0 Revisi</div><div class="kpi-sub">Tercatat di Arsip Data Revisi</div></div>
       </section>
       <div class="satker-card">
         <div class="satker-header" style="border-left-color:#2563eb;">
-          <div class="satker-title-area"><div class="satker-title">Riwayat & Log Revisi DIPA</div></div>
+          <div class="satker-title-area"><div class="satker-title">Arsip Data Revisi DIPA — Satker 694451</div></div>
         </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th style="width:90px;">Revisi Ke</th><th style="width:150px;">Tanggal</th><th>Nomor Surat / Pengesahan</th><th>Keterangan / Jenis Revisi</th><th class="num" style="width:180px;">Perubahan Pagu</th></tr></thead>
+            <thead><tr><th style="width:120px;">Revisi</th><th style="width:150px;">Tanggal</th><th style="width:220px;">Digitalstamp</th><th class="num" style="width:190px;">Pagu</th><th class="num" style="width:190px;">Selisih Perubahan</th></tr></thead>
             <tbody id="revisiTableBody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- TAB 3: RINCIAN POK -->
     <div id="tab-pok" class="tab-panel">
       <div class="section-bar">
-        <h2>Petunjuk Operasional Kegiatan (POK) — Perbandingan & Alokasi</h2>
+        <h2>Petunjuk Operasional Kegiatan (POK) — Alokasi & Sisa Dana</h2>
         <input type="text" id="searchPokBox" class="search-input" placeholder="Cari komponen atau akun POK..." />
       </div>
       <div id="pokContainer"></div>
@@ -282,6 +278,7 @@
         const warna = PITA_WARNA.at(group._idx % PITA_WARNA.length);
         const pNum = parseRupiah(group.pagu_satker);
         const rNum = parseRupiah(group.realisasi_satker);
+        const sNum = Math.max(0, pNum - rNum);
         const pct = pNum > 0 ? (rNum / pNum * 100) : 0;
 
         const filteredRincian = (group.rincian || []).filter(r => !keyword || r.nama.toLowerCase().includes(keyword));
@@ -289,15 +286,17 @@
           ? filteredRincian.map(r => {
               const pItem = parseRupiah(r.pagu);
               const rItem = parseRupiah(r.realisasi);
+              const sItem = Math.max(0, pItem - rItem);
               const pctItem = pItem > 0 ? (rItem / pItem * 100) : 0;
               return `<tr>
                 <td>${r.nama}</td>
                 <td class="num">Rp ${r.pagu}</td>
                 <td class="num">Rp ${r.realisasi}</td>
+                <td class="num" style="color:var(--amber);font-weight:600;">${formatRupiah(sItem)}</td>
                 <td class="num"><span class="badge-pct ${getBadgeClass(pctItem)}">${r.persen}</span></td>
               </tr>`;
             }).join('')
-          : '<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:16px;">Tidak ada rincian output yang cocok.</td></tr>';
+          : '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:16px;">Tidak ada rincian output yang cocok.</td></tr>';
 
         const card = document.createElement('div');
         card.className = 'satker-card';
@@ -310,11 +309,20 @@
             <div class="satker-summary-right">
               <div class="summary-line"><span class="lbl">Pagu:</span><span class="val">Rp ${group.pagu_satker}</span></div>
               <div class="summary-line"><span class="lbl">Realisasi:</span><span class="val" style="color:var(--green);">Rp ${group.realisasi_satker} (${group.persen_satker})</span></div>
+              <div class="summary-line"><span class="lbl">Sisa:</span><span class="val" style="color:var(--amber);">${formatRupiah(sNum)}</span></div>
             </div>
           </div>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>Kode & Uraian Rincian Output (RO)</th><th class="num" style="width:180px;">Pagu Efektif</th><th class="num" style="width:180px;">Realisasi SP2D</th><th class="num" style="width:110px;">Serapan</th></tr></thead>
+              <thead>
+                <tr>
+                  <th>Kode & Uraian Rincian Output (RO)</th>
+                  <th class="num" style="width:170px;">Pagu Efektif</th>
+                  <th class="num" style="width:170px;">Realisasi SP2D</th>
+                  <th class="num" style="width:170px;">Sisa Anggaran</th>
+                  <th class="num" style="width:105px;">Serapan</th>
+                </tr>
+              </thead>
               <tbody>${rowsHtml}</tbody>
             </table>
           </div>`;
@@ -324,18 +332,18 @@
 
     function renderRevisiTab() {
       const list = globalData.revisi_dipa || [];
-      document.getElementById('revJumlah').textContent = list.length + ' Kali';
+      document.getElementById('revJumlah').textContent = list.length + ' Revisi';
       const tbody = document.getElementById('revisiTableBody');
       if (list.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#64748b;padding:24px;">Belum ada data riwayat revisi di <b>data.json</b>. Tambahkan array <code>revisi_dipa</code> dari SatuDJA / ADK DIPA untuk menampilkannya di sini.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#64748b;padding:24px;">Data riwayat revisi DIPA (00 s.d. 12) siap ditampilkan setelah <b>robot.py</b> menarik halaman Arsip Data Revisi SatuDJA.</td></tr>';
         return;
       }
       tbody.innerHTML = list.map(rev => `<tr>
-        <td><strong>Ke-${rev.ke || '-'}</strong></td>
+        <td><strong>${rev.revisi || '-'}</strong></td>
         <td>${rev.tanggal || '-'}</td>
-        <td>${rev.nomor || '-'}</td>
-        <td>${rev.keterangan || '-'}</td>
-        <td class="num">${rev.pagu || '-'}</td>
+        <td><code>${rev.digitalstamp || '-'}</code></td>
+        <td class="num"><strong>${rev.pagu || '-'}</strong></td>
+        <td class="num" style="color:var(--blue);font-weight:600;">${rev.selisih || '-'}</td>
       </tr>`).join('');
     }
 
@@ -376,10 +384,11 @@
 
     function exportCSV() {
       if (!globalData) return;
-      let csv = 'Eselon_II_Kegiatan;Kode_Uraian_RO;Pagu;Realisasi;Persentase\n';
+      let csv = 'Eselon_II_Kegiatan;Kode_Uraian_RO;Pagu_Efektif;Realisasi_SP2D;Sisa_Anggaran;Persentase\n';
       (globalData.kelompok_satker || []).forEach(g => {
         (g.rincian || []).forEach(r => {
-          csv += `"${g.judul_header}";"${r.nama}";"${r.pagu}";"${r.realisasi}";"${r.persen}"\n`;
+          const sisa = Math.max(0, parseRupiah(r.pagu) - parseRupiah(r.realisasi));
+          csv += `"${g.judul_header}";"${r.nama}";"${r.pagu}";"${r.realisasi}";"${sisa.toLocaleString('id-ID')}";"${r.persen}"\n`;
         });
       });
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
