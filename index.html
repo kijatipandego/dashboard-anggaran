@@ -163,7 +163,7 @@
       const pctTotal = totalPagu > 0 ? (totalReal / totalPagu * 100) : 0;
 
       document.getElementById('kpiPagu').textContent = formatRupiah(totalPagu);
-      document.getElementById('kpiPaguSub').textContent = selectedFilter === 'ALL' ? '6 Eselon II Utama (Tanpa 7229.AEG)' : '1 Asdep Terpilih';
+      document.getElementById('kpiPaguSub').textContent = selectedFilter === 'ALL' ? '6 Eselon II Utama (Tanpa 7229.AEG)' : '1 Eselon II Terpilih';
       document.getElementById('kpiRealisasi').textContent = formatRupiah(totalReal);
       document.getElementById('kpiSisa').textContent = formatRupiah(totalSisa);
       document.getElementById('kpiPersen').textContent = pctTotal.toFixed(2).replace('.', ',') + '%';
@@ -264,7 +264,7 @@
 
     function exportCSV() {
       if (!globalData) return;
-      let csv = 'Eselon II_Kegiatan;Kode_Uraian_RO;Pagu;Realisasi;Persentase\n';
+      let csv = 'Eselon_II_Kegiatan;Kode_Uraian_RO;Pagu;Realisasi;Persentase\n';
       (globalData.kelompok_satker || []).forEach(g => {
         (g.rincian || []).forEach(r => {
           csv += `"${g.judul_header}";"${r.nama}";"${r.pagu}";"${r.realisasi}";"${r.persen}"\n`;
