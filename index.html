@@ -1,108 +1,546 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Dashboard Serapan Anggaran</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f6f9; padding: 30px; color: #333; }
-        .container { max-width: 960px; margin: auto; }
-        .header-utama { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 25px; }
-        .cards { display: flex; gap: 15px; margin-top: 20px; }
-        .card { flex: 1; background: #0056b3; color: white; padding: 20px; border-radius: 8px; }
-        .card h3 { margin: 0 0 8px 0; font-size: 14px; opacity: 0.9; }
-        .card p { margin: 0; font-size: 22px; font-weight: bold; }
-        
-        .satker-box { background: white; padding: 20px 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
-        .satker-header { display: flex; justify-content: space-between; align-items: stretch; gap: 20px; border-bottom: 2px solid #f0f2f5; padding-bottom: 12px; margin-bottom: 12px; }
-        .satker-title { margin: 0; font-size: 16px; padding: 10px 15px; border-radius: 7px; flex: 1; display: flex; align-items: center; }
-        .satker-summary { font-size: 14px; background: #f8f9fa; border: 1px solid #e9ecef; padding: 8px 14px; border-radius: 6px; color: #333; text-align: left; line-height: 1.5; white-space: nowrap; display: flex; flex-direction: column; justify-content: center; }
-        
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 10px 12px; border-bottom: 1px solid #eee; text-align: left; font-size: 14px; }
-        th { background-color: #f8f9fa; color: #555; }
-        .angka { text-align: right; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Monitoring Anggaran - Deputi Bidang Pengembangan Penyelenggara Kegiatan (Events)</title>
+  <script src="https://jsdelivr.net"></script>
+  <style>
+    :root {
+      --navy: #12284c;
+      --navy-light: #1e3f73;
+      --bg: #f3f6fa;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --muted: #64748b;
+      --green: #0d9488;
+      --blue: #2563eb;
+      --amber: #d97706;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .topbar {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      color: #fff;
+      padding: 22px 28px;
+      box-shadow: 0 4px 12px rgba(18, 40, 76, 0.15);
+    }
+    .topbar-inner {
+      max-width: 1340px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .brand-area { display: flex; align-items: center; gap: 14px; }
+    .brand-badge {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13px;
+      color: #fde68a;
+    }
+    .topbar h1 { font-size: 21px; font-weight: 700; margin-bottom: 2px; }
+    .topbar p { font-size: 13px; color: #cbd5e1; }
+    .header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .filter-select {
+      padding: 9px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+    }
+    .filter-select option { color: var(--text); background: #fff; }
+    .btn-export {
+      background: #fff;
+      color: var(--navy);
+      border: none;
+      padding: 9px 15px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-export:hover { background: #f1f5f9; }
+
+    .container {
+      max-width: 1340px;
+      margin: 24px auto 48px;
+      padding: 0 20px;
+    }
+
+    .info-strip {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--blue);
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--muted);
+      gap: 10px;
+    }
+    .info-strip strong { color: var(--text); }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .kpi-pagu::before { background: var(--navy); }
+    .kpi-real::before { background: var(--green); }
+    .kpi-sisa::before { background: var(--amber); }
+    .kpi-persen::before { background: var(--blue); }
+
+    .kpi-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .kpi-value {
+      font-size: 23px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .kpi-sub { font-size: 12px; color: var(--muted); }
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 18px;
+      margin-bottom: 26px;
+    }
+    @media (max-width: 960px) {
+      .charts-grid { grid-template-columns: 1fr; }
+    }
+    .chart-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    }
+    .chart-title { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .chart-desc { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+    .canvas-wrap { position: relative; height: 260px; width: 100%; }
+
+    .section-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .section-bar h2 { font-size: 17px; font-weight: 700; color: var(--navy); }
+    .search-input {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 13px;
+      width: 280px;
+      max-width: 100%;
+      outline: none;
+    }
+
+    .satker-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 18px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    }
+    .satker-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      border-left: 7px solid var(--navy);
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      gap: 16px;
+    }
+    .satker-title-area { flex: 1; min-width: 260px; }
+    .satker-title { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .progress-track {
+      width: 100%;
+      max-width: 420px;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill { height: 100%; border-radius: 99px; transition: width 0.4s ease; }
+
+    .satker-summary-right {
+      text-align: left;
+      min-width: 260px;
+      background: #fff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .summary-line { display: flex; justify-content: space-between; gap: 14px; margin-bottom: 3px; }
+    .summary-line:last-child { margin-bottom: 0; }
+    .summary-line span.lbl { color: var(--muted); font-weight: 600; }
+    .summary-line span.val { font-weight: 700; color: var(--text); }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th {
+      background: #f1f5f9;
+      color: #475569;
+      font-weight: 700;
+      text-align: left;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    td { padding: 10px 16px; border-bottom: 1px solid #f1f5f9; color: var(--text); }
+    tr:hover td { background: #f8fafc; }
+    .badge-pct { display: inline-block; padding: 3px 8px; border-radius: 99px; font-size: 12px; font-weight: 700; }
+    .pct-high { background: #ccfbf1; color: #0f766e; }
+    .pct-mid { background: #fef3c7; color: #b45309; }
+    .pct-low { background: #fee2e2; color: #b91c1c; }
+    footer { text-align: center; font-size: 12px; color: var(--muted); margin-top: 32px; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header-utama">
-            <h1 style="margin-top:0;">Dashboard Monitoring Anggaran</h1>
-            <p style="margin-bottom:0; color:#666;">Terakhir diperbarui: <strong id="waktu-update">Memuat...</strong></p>
 
-            <div class="cards">
-                <div class="card">
-                    <h3>Total Pagu Keseluruhan</h3>
-                    <p id="total-pagu">-</p>
-                </div>
-                <div class="card" style="background: #28a745;">
-                    <h3>Total Realisasi Keseluruhan</h3>
-                    <p id="total-realisasi">-</p>
-                </div>
-                <div class="card" style="background: #17a2b8;">
-                    <h3>Persentase Serapan Total</h3>
-                    <p id="persen-serapan">-</p>
-                </div>
-            </div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-area">
+        <div class="brand-badge">KEMENPAR • ESELON I</div>
+        <div>
+          <h1>Dashboard Monitoring Anggaran</h1>
+          <p>Deputi Bidang Pengembangan Penyelenggara Kegiatan (Events) — T.A. 2026</p>
         </div>
+      </div>
+      <div class="header-actions">
+        <select id="filterKegiatan" class="filter-select">
+          <option value="ALL">Semua Kegiatan (6 Direktorat)</option>
+        </select>
+        <button class="btn-export" onclick="exportCSV()">⬇ Unduh Rekap CSV</button>
+      </div>
+    </div>
+  </header>
 
-        <div id="wadah-satker"></div>
+  <main class="container">
+    <div class="info-strip">
+      <div>Sumber Data: <strong>SatuDJA Kemenkeu (Otomatis)</strong> • Catatan: Sub-output <strong>7229.AEG</strong> dikecualikan dari agregat.</div>
+      <div>Pembaruan Terakhir: <strong id="lastUpdated">Memuat data...</strong></div>
     </div>
 
-    <script>
-        const temaWarna = [
-            { bg: '#e3f0ff', teks: '#004085' },
-            { bg: '#e6f7ec', teks: '#155724' },
-            { bg: '#f0e8ff', teks: '#3d2070' },
-            { bg: '#fff0e0', teks: '#8a3504' },
-            { bg: '#e0f5f8', teks: '#0c5460' },
-            { bg: '#fce8f0', teks: '#7d153e' }
-        ];
+    <section class="kpi-grid">
+      <div class="kpi-card kpi-pagu">
+        <div class="kpi-label">Total Pagu Efektif</div>
+        <div class="kpi-value" id="kpiPagu">Rp 0</div>
+        <div class="kpi-sub" id="kpiPaguSub">6 Kegiatan Utama</div>
+      </div>
+      <div class="kpi-card kpi-real">
+        <div class="kpi-label">Realisasi Anggaran (SP2D)</div>
+        <div class="kpi-value" id="kpiRealisasi" style="color: var(--green);">Rp 0</div>
+        <div class="kpi-sub">Dana telah dicairkan</div>
+      </div>
+      <div class="kpi-card kpi-sisa">
+        <div class="kpi-label">Sisa Anggaran</div>
+        <div class="kpi-value" id="kpiSisa" style="color: var(--amber);">Rp 0</div>
+        <div class="kpi-sub">Belum terealisasi</div>
+      </div>
+      <div class="kpi-card kpi-persen">
+        <div class="kpi-label">Capaian Serapan</div>
+        <div class="kpi-value" id="kpiPersen" style="color: var(--blue);">0,00%</div>
+        <div class="kpi-sub">Persentase terhadap pagu efektif</div>
+      </div>
+    </section>
 
-        fetch('data.json')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('waktu-update').innerText = data.terakhir_update;
-                document.getElementById('total-pagu').innerText = data.pagu_total;
-                document.getElementById('total-realisasi').innerText = data.realisasi_total;
-                document.getElementById('persen-serapan').innerText = data.persentase;
+    <section class="charts-grid">
+      <div class="chart-box">
+        <div class="chart-title">Perbandingan Pagu vs Realisasi per Kegiatan</div>
+        <div class="chart-desc">Dalam Miliar Rupiah berdasarkan kode kegiatan (7228 – 7245)</div>
+        <div class="canvas-wrap">
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Komposisi Serapan Keseluruhan</div>
+        <div class="chart-desc">Proporsi Realisasi SP2D terhadap Sisa Pagu</div>
+        <div class="canvas-wrap">
+          <canvas id="donutChart"></canvas>
+        </div>
+      </div>
+    </section>
 
-                let htmlSatker = '';
-                data.kelompok_satker.forEach((satker, index) => {
-                    const warna = temaWarna[index % temaWarna.length];
-                    let barisOutput = '';
-                    satker.rincian.forEach(item => {
-                        barisOutput += `<tr>
-                            <td>${item.nama}</td>
-                            <td class="angka">${item.pagu}</td>
-                            <td class="angka">${item.realisasi}</td>
-                            <td class="angka"><strong>${item.persen}</strong></td>
-                        </tr>`;
-                    });
+    <div class="section-bar">
+      <h2>Rincian Anggaran per Kegiatan & Sub-Output (RO)</h2>
+      <input type="text" id="searchBox" class="search-input" placeholder="Cari kode RO atau uraian..." />
+    </div>
 
-                    htmlSatker += `
-                    <div class="satker-box">
-                        <div class="satker-header">
-                            <h2 class="satker-title" style="background-color: ${warna.bg}; color: ${warna.teks};">${satker.judul_header}</h2>
-                            <div class="satker-summary">
-                                <div>Pagu: <strong>Rp ${satker.pagu_satker}</strong></div>
-                                <div>Realisasi: <strong>Rp ${satker.realisasi_satker} (${satker.persen_satker})</strong></div>
-                            </div>
-                        </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Rincian Output / Sub-Komponen</th>
-                                    <th class="angka">Pagu (Rp)</th>
-                                    <th class="angka">Realisasi (Rp)</th>
-                                    <th class="angka">Serapan</th>
-                                </tr>
-                            </thead>
-                            <tbody>${barisOutput}</tbody>
-                        </table>
-                    </div>`;
-                });
-                document.getElementById('wadah-satker').innerHTML = htmlSatker;
-            });
-    </script>
+    <div id="satkerContainer"></div>
+
+    <footer>
+      Dashboard Monitoring Anggaran Internal • Sinkronisasi Otomatis SatuDJA → GitHub Pages
+    </footer>
+  </main>
+  <script>
+    const PITA_WARNA = ['#1d4ed8', '#0d9488', '#7c3aed', '#d97706', '#db2777', '#334155'];
+    let globalData = null;
+    let barChartInstance = null;
+    let donutChartInstance = null;
+
+    function parseRupiah(str) {
+      if (!str) return 0;
+      const cleaned = String(str).replace(/[^\d-]/g, '');
+      return parseInt(cleaned, 10) || 0;
+    }
+
+    function formatRupiah(num) {
+      return 'Rp ' + Math.round(num).toLocaleString('id-ID');
+    }
+
+    function getBadgeClass(pctNum) {
+      if (pctNum >= 85) return 'pct-high';
+      if (pctNum >= 60) return 'pct-mid';
+      return 'pct-low';
+    }
+
+    async function loadDashboard() {
+      try {
+        const res = await fetch('data.json?t=' + Date.now());
+        globalData = await res.json();
+
+        document.getElementById('lastUpdated').textContent = globalData.terakhir_update || '-';
+
+        const select = document.getElementById('filterKegiatan');
+        const list = globalData.kelompok_satker || [];
+        list.forEach((item, idx) => {
+          const opt = document.createElement('option');
+          opt.value = String(idx);
+          opt.textContent = item.judul_header;
+          select.appendChild(opt);
+        });
+
+        select.addEventListener('change', renderDashboard);
+        document.getElementById('searchBox').addEventListener('input', renderDashboard);
+
+        renderDashboard();
+      } catch (err) {
+        document.getElementById('satkerContainer').innerHTML =
+          '<div class="satker-card" style="padding:20px;color:#b91c1c;">Gagal memuat data.json. Pastikan robot.py sudah mengirim data terbaru ke GitHub.</div>';
+      }
+    }
+
+    function renderDashboard() {
+      if (!globalData) return;
+
+      const selectedFilter = document.getElementById('filterKegiatan').value;
+      const keyword = document.getElementById('searchBox').value.toLowerCase().trim();
+      const allGroups = globalData.kelompok_satker || [];
+
+      const activeGroups = selectedFilter === 'ALL'
+        ? allGroups.map((g, i) => ({ ...g, _idx: i }))
+        : [{ ...allGroups.at(parseInt(selectedFilter, 10)), _idx: parseInt(selectedFilter, 10) }];
+
+      let totalPagu = 0;
+      let totalReal = 0;
+
+      activeGroups.forEach(g => {
+        totalPagu += parseRupiah(g.pagu_satker);
+        totalReal += parseRupiah(g.realisasi_satker);
+      });
+
+      const totalSisa = Math.max(0, totalPagu - totalReal);
+      const pctTotal = totalPagu > 0 ? (totalReal / totalPagu * 100) : 0;
+
+      document.getElementById('kpiPagu').textContent = formatRupiah(totalPagu);
+      document.getElementById('kpiPaguSub').textContent = selectedFilter === 'ALL' ? '6 Kegiatan Utama (Tanpa 7229.AEG)' : '1 Kegiatan Terpilih';
+      document.getElementById('kpiRealisasi').textContent = formatRupiah(totalReal);
+      document.getElementById('kpiSisa').textContent = formatRupiah(totalSisa);
+      document.getElementById('kpiPersen').textContent = pctTotal.toFixed(2).replace('.', ',') + '%';
+
+      renderCharts(allGroups, totalReal, totalSisa);
+      renderCards(activeGroups, keyword);
+    }
+
+    function renderCharts(allGroups, totalReal, totalSisa) {
+      const labels = allGroups.map(g => {
+        const cleanCode = g.judul_header.replace('[', '').split(']').at(0);
+        return cleanCode || g.judul_header.slice(0, 10);
+      });
+      const paguMiliar = allGroups.map(g => +(parseRupiah(g.pagu_satker) / 1e9).toFixed(2));
+      const realMiliar = allGroups.map(g => +(parseRupiah(g.realisasi_satker) / 1e9).toFixed(2));
+
+      if (barChartInstance) barChartInstance.destroy();
+      barChartInstance = new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            { label: 'Pagu (Miliar Rp)', data: paguMiliar, backgroundColor: '#94a3b8', borderRadius: 6 },
+            { label: 'Realisasi (Miliar Rp)', data: realMiliar, backgroundColor: '#0d9488', borderRadius: 6 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'top' } },
+          scales: { y: { beginAtZero: true } }
+        }
+      });
+
+      if (donutChartInstance) donutChartInstance.destroy();
+      donutChartInstance = new Chart(document.getElementById('donutChart'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Realisasi SP2D', 'Sisa Anggaran'],
+          datasets: [{
+            data: [totalReal, totalSisa],
+            backgroundColor: ['#0d9488', '#e2e8f0'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '68%',
+          plugins: {
+            legend: { position: 'bottom' },
+            tooltip: {
+              callbacks: {
+                label: ctx => ctx.label + ': ' + formatRupiah(ctx.raw)
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function renderCards(groups, keyword) {
+      const container = document.getElementById('satkerContainer');
+      container.innerHTML = '';
+
+      groups.forEach(group => {
+        const warna = PITA_WARNA.at(group._idx % PITA_WARNA.length);
+        const pNum = parseRupiah(group.pagu_satker);
+        const rNum = parseRupiah(group.realisasi_satker);
+        const pct = pNum > 0 ? (rNum / pNum * 100) : 0;
+
+        const filteredRincian = (group.rincian || []).filter(r =>
+          !keyword || r.nama.toLowerCase().includes(keyword)
+        );
+
+        const rowsHtml = filteredRincian.length > 0
+          ? filteredRincian.map(r => {
+              const pItem = parseRupiah(r.pagu);
+              const rItem = parseRupiah(r.realisasi);
+              const pctItem = pItem > 0 ? (rItem / pItem * 100) : 0;
+              return `
+                <tr>
+                  <td>${r.nama}</td>
+                  <td class="num">Rp ${r.pagu}</td>
+                  <td class="num">Rp ${r.realisasi}</td>
+                  <td class="num"><span class="badge-pct ${getBadgeClass(pctItem)}">${r.persen}</span></td>
+                </tr>
+              `;
+            }).join('')
+          : '<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:16px;">Tidak ada rincian output yang cocok.</td></tr>';
+
+        const card = document.createElement('div');
+        card.className = 'satker-card';
+        card.innerHTML = `
+          <div class="satker-header" style="border-left-color: ${warna};">
+            <div class="satker-title-area">
+              <div class="satker-title">${group.judul_header}</div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: ${Math.min(100, pct)}%; background: ${warna};"></div>
+              </div>
+            </div>
+            <div class="satker-summary-right">
+              <div class="summary-line">
+                <span class="lbl">Pagu:</span>
+                <span class="val">Rp ${group.pagu_satker}</span>
+              </div>
+              <div class="summary-line">
+                <span class="lbl">Realisasi:</span>
+                <span class="val" style="color: var(--green);">Rp ${group.realisasi_satker} (${group.persen_satker})</span>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Kode & Uraian Rincian Output (RO)</th>
+                  <th class="num" style="width:180px;">Pagu Efektif</th>
+                  <th class="num" style="width:180px;">Realisasi SP2D</th>
+                  <th class="num" style="width:110px;">Serapan</th>
+                </tr>
+              </thead>
+              <tbody>${rowsHtml}</tbody>
+            </table>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function exportCSV() {
+      if (!globalData) return;
+      let csv = 'Kegiatan;Kode_Uraian_RO;Pagu;Realisasi;Persentase\n';
+      (globalData.kelompok_satker || []).forEach(g => {
+        (g.rincian || []).forEach(r => {
+          csv += `"${g.judul_header}";"${r.nama}";"${r.pagu}";"${r.realisasi}";"${r.persen}"\n`;
+        });
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'Rekap_Anggaran_Deputi_Events.csv';
+      link.click();
+    }
+
+    loadDashboard();
+  </script>
 </body>
 </html>
