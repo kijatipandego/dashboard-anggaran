@@ -12,8 +12,8 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Segoe UI', Roboto, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
-    .topbar { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); color: #fff; padding: 22px 28px; box-shadow: 0 4px 12px rgba(18,40,76,0.15); }
-    .topbar-inner { max-width: 1340px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
+    .topbar { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); color: #fff; padding: 20px 28px 0; box-shadow: 0 4px 12px rgba(18,40,76,0.15); }
+    .topbar-inner { max-width: 1340px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding-bottom: 18px; }
     .brand-area { display: flex; align-items: center; gap: 14px; }
     .brand-badge { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.28); padding: 8px 12px; border-radius: 10px; font-weight: 700; font-size: 13px; color: #fde68a; }
     .topbar h1 { font-size: 21px; font-weight: 700; margin-bottom: 2px; }
@@ -23,7 +23,16 @@
     .filter-select option { color: var(--text); background: #fff; }
     .btn-export { background: #fff; color: var(--navy); border: none; padding: 9px 15px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; }
     .btn-export:hover { background: #f1f5f9; }
-    .container { max-width: 1340px; margin: 24px auto 48px; padding: 0 20px; }
+
+    /* MENU TAB NAVIGASI */
+    .nav-tabs { max-width: 1340px; margin: 0 auto; display: flex; gap: 6px; overflow-x: auto; }
+    .tab-btn { background: rgba(255,255,255,0.1); color: #cbd5e1; border: none; padding: 11px 20px; border-radius: 10px 10px 0 0; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+    .tab-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+    .tab-btn.active { background: var(--bg); color: var(--navy); box-shadow: 0 -2px 6px rgba(0,0,0,0.08); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .container { max-width: 1340px; margin: 22px auto 48px; padding: 0 20px; }
     .info-strip { background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--blue); border-radius: 8px; padding: 10px 16px; margin-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; font-size: 13px; color: var(--muted); gap: 10px; }
     .info-strip strong { color: var(--text); }
     .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 22px; }
@@ -80,32 +89,79 @@
         <button class="btn-export" onclick="exportCSV()">⬇ Unduh Rekap CSV</button>
       </div>
     </div>
+    <nav class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('tab-realisasi', this)">📊 Realisasi Anggaran</button>
+      <button class="tab-btn" onclick="switchTab('tab-revisi', this)">📑 Revisi DIPA</button>
+      <button class="tab-btn" onclick="switchTab('tab-pok', this)">📋 Rincian POK</button>
+    </nav>
   </header>
+
   <main class="container">
     <div class="info-strip">
       <div>Sumber Data: <strong>SatuDJA Kemenkeu (Otomatis)</strong> • Catatan: Sub-output <strong>7229.AEG</strong> dikecualikan dari agregat.</div>
       <div>Pembaruan Terakhir: <strong id="lastUpdated">Memuat data...</strong></div>
     </div>
-    <section class="kpi-grid">
-      <div class="kpi-card kpi-pagu"><div class="kpi-label">Total Pagu Efektif</div><div class="kpi-value" id="kpiPagu">Rp 0</div><div class="kpi-sub" id="kpiPaguSub">6 Eselon II / Kegiatan Utama</div></div>
-      <div class="kpi-card kpi-real"><div class="kpi-label">Realisasi Anggaran (SP2D)</div><div class="kpi-value" id="kpiRealisasi" style="color:var(--green);">Rp 0</div><div class="kpi-sub">Dana telah dicairkan</div></div>
-      <div class="kpi-card kpi-sisa"><div class="kpi-label">Sisa Anggaran</div><div class="kpi-value" id="kpiSisa" style="color:var(--amber);">Rp 0</div><div class="kpi-sub">Belum terealisasi</div></div>
-      <div class="kpi-card kpi-persen"><div class="kpi-label">Capaian Serapan</div><div class="kpi-value" id="kpiPersen" style="color:var(--blue);">0,00%</div><div class="kpi-sub">Persentase terhadap pagu efektif</div></div>
-    </section>
-    <section class="charts-grid">
-      <div class="chart-box"><div class="chart-title">Perbandingan Pagu vs Realisasi per Eselon II / Kegiatan</div><div class="chart-desc">Dalam Miliar Rupiah berdasarkan kode kegiatan (7228 – 7245)</div><div id="barChartArea"></div></div>
-      <div class="chart-box"><div class="chart-title">Komposisi Serapan Keseluruhan</div><div class="chart-desc">Proporsi Realisasi SP2D terhadap Sisa Pagu</div><div id="donutChartArea"></div></div>
-    </section>
-    <div class="section-bar">
-      <h2>Rincian Anggaran per Eselon II & Sub-Output (RO)</h2>
-      <input type="text" id="searchBox" class="search-input" placeholder="Cari kode RO atau uraian..." />
+
+    <!-- TAB 1: REALISASI ANGGARAN -->
+    <div id="tab-realisasi" class="tab-panel active">
+      <section class="kpi-grid">
+        <div class="kpi-card kpi-pagu"><div class="kpi-label">Total Pagu Efektif</div><div class="kpi-value" id="kpiPagu">Rp 0</div><div class="kpi-sub" id="kpiPaguSub">6 Eselon II / Kegiatan Utama</div></div>
+        <div class="kpi-card kpi-real"><div class="kpi-label">Realisasi Anggaran (SP2D)</div><div class="kpi-value" id="kpiRealisasi" style="color:var(--green);">Rp 0</div><div class="kpi-sub">Dana telah dicairkan</div></div>
+        <div class="kpi-card kpi-sisa"><div class="kpi-label">Sisa Anggaran</div><div class="kpi-value" id="kpiSisa" style="color:var(--amber);">Rp 0</div><div class="kpi-sub">Belum terealisasi</div></div>
+        <div class="kpi-card kpi-persen"><div class="kpi-label">Capaian Serapan</div><div class="kpi-value" id="kpiPersen" style="color:var(--blue);">0,00%</div><div class="kpi-sub">Persentase terhadap pagu efektif</div></div>
+      </section>
+      <section class="charts-grid">
+        <div class="chart-box"><div class="chart-title">Perbandingan Pagu vs Realisasi per Eselon II / Kegiatan</div><div class="chart-desc">Dalam Miliar Rupiah berdasarkan kode kegiatan (7228 – 7245)</div><div id="barChartArea"></div></div>
+        <div class="chart-box"><div class="chart-title">Komposisi Serapan Keseluruhan</div><div class="chart-desc">Proporsi Realisasi SP2D terhadap Sisa Pagu</div><div id="donutChartArea"></div></div>
+      </section>
+      <div class="section-bar">
+        <h2>Rincian Anggaran per Eselon II & Sub-Output (RO)</h2>
+        <input type="text" id="searchBox" class="search-input" placeholder="Cari kode RO atau uraian..." />
+      </div>
+      <div id="satkerContainer"></div>
     </div>
-    <div id="satkerContainer"></div>
+
+    <!-- TAB 2: REVISI DIPA -->
+    <div id="tab-revisi" class="tab-panel">
+      <section class="kpi-grid">
+        <div class="kpi-card kpi-pagu"><div class="kpi-label">Status DIPA Aktif</div><div class="kpi-value" id="revStatus">DIPA Petikan T.A. 2026</div><div class="kpi-sub">Satker 694451</div></div>
+        <div class="kpi-card kpi-real"><div class="kpi-label">Pagu Efektif Saat Ini</div><div class="kpi-value" id="revPaguAktif" style="color:var(--green);">Rp 0</div><div class="kpi-sub">Sesuai penarikan SatuDJA terakhir</div></div>
+        <div class="kpi-card kpi-sisa"><div class="kpi-label">Total Frekuensi Revisi</div><div class="kpi-value" id="revJumlah" style="color:var(--amber);">0 Kali</div><div class="kpi-sub">Tercatat di riwayat DIPA</div></div>
+      </section>
+      <div class="satker-card">
+        <div class="satker-header" style="border-left-color:#2563eb;">
+          <div class="satker-title-area"><div class="satker-title">Riwayat & Log Revisi DIPA</div></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th style="width:90px;">Revisi Ke</th><th style="width:150px;">Tanggal</th><th>Nomor Surat / Pengesahan</th><th>Keterangan / Jenis Revisi</th><th class="num" style="width:180px;">Perubahan Pagu</th></tr></thead>
+            <tbody id="revisiTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: RINCIAN POK -->
+    <div id="tab-pok" class="tab-panel">
+      <div class="section-bar">
+        <h2>Petunjuk Operasional Kegiatan (POK) — Perbandingan & Alokasi</h2>
+        <input type="text" id="searchPokBox" class="search-input" placeholder="Cari komponen atau akun POK..." />
+      </div>
+      <div id="pokContainer"></div>
+    </div>
+
     <footer>Dashboard Monitoring Anggaran Internal • Sinkronisasi Otomatis SatuDJA → GitHub Pages</footer>
   </main>
   <script>
     const PITA_WARNA = ['#1d4ed8', '#0d9488', '#7c3aed', '#d97706', '#db2777', '#334155'];
     let globalData = null;
+
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+    }
 
     function parseRupiah(str) {
       if (!str) return 0;
@@ -136,6 +192,7 @@
 
         select.addEventListener('change', renderDashboard);
         document.getElementById('searchBox').addEventListener('input', renderDashboard);
+        document.getElementById('searchPokBox').addEventListener('input', renderDashboard);
         renderDashboard();
       } catch (err) {
         document.getElementById('satkerContainer').innerHTML =
@@ -147,6 +204,7 @@
       if (!globalData) return;
       const selectedFilter = document.getElementById('filterKegiatan').value;
       const keyword = document.getElementById('searchBox').value.toLowerCase().trim();
+      const pokKeyword = document.getElementById('searchPokBox').value.toLowerCase().trim();
       const allGroups = globalData.kelompok_satker || [];
 
       const activeGroups = selectedFilter === 'ALL'
@@ -167,9 +225,12 @@
       document.getElementById('kpiRealisasi').textContent = formatRupiah(totalReal);
       document.getElementById('kpiSisa').textContent = formatRupiah(totalSisa);
       document.getElementById('kpiPersen').textContent = pctTotal.toFixed(2).replace('.', ',') + '%';
+      document.getElementById('revPaguAktif').textContent = formatRupiah(totalPagu);
 
       renderCharts(allGroups, totalReal, totalSisa);
       renderCards(activeGroups, keyword);
+      renderRevisiTab();
+      renderPokTab(activeGroups, pokKeyword);
     }
 
     function renderCharts(allGroups, totalReal, totalSisa) {
@@ -214,7 +275,6 @@
           </div>
         </div>`;
     }
-
     function renderCards(groups, keyword) {
       const container = document.getElementById('satkerContainer');
       container.innerHTML = '';
@@ -256,6 +316,58 @@
             <table>
               <thead><tr><th>Kode & Uraian Rincian Output (RO)</th><th class="num" style="width:180px;">Pagu Efektif</th><th class="num" style="width:180px;">Realisasi SP2D</th><th class="num" style="width:110px;">Serapan</th></tr></thead>
               <tbody>${rowsHtml}</tbody>
+            </table>
+          </div>`;
+        container.appendChild(card);
+      });
+    }
+
+    function renderRevisiTab() {
+      const list = globalData.revisi_dipa || [];
+      document.getElementById('revJumlah').textContent = list.length + ' Kali';
+      const tbody = document.getElementById('revisiTableBody');
+      if (list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#64748b;padding:24px;">Belum ada data riwayat revisi di <b>data.json</b>. Tambahkan array <code>revisi_dipa</code> dari SatuDJA / ADK DIPA untuk menampilkannya di sini.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = list.map(rev => `<tr>
+        <td><strong>Ke-${rev.ke || '-'}</strong></td>
+        <td>${rev.tanggal || '-'}</td>
+        <td>${rev.nomor || '-'}</td>
+        <td>${rev.keterangan || '-'}</td>
+        <td class="num">${rev.pagu || '-'}</td>
+      </tr>`).join('');
+    }
+
+    function renderPokTab(groups, keyword) {
+      const container = document.getElementById('pokContainer');
+      container.innerHTML = '';
+      groups.forEach(group => {
+        const warna = PITA_WARNA.at(group._idx % PITA_WARNA.length);
+        const items = (group.rincian || []).filter(r => !keyword || r.nama.toLowerCase().includes(keyword));
+        const rows = items.map(r => {
+          const sisa = Math.max(0, parseRupiah(r.pagu) - parseRupiah(r.realisasi));
+          return `<tr>
+            <td>${r.nama}</td>
+            <td class="num">Rp ${r.pagu}</td>
+            <td class="num">Rp ${r.realisasi}</td>
+            <td class="num" style="color:var(--amber);font-weight:600;">${formatRupiah(sisa)}</td>
+          </tr>`;
+        }).join('');
+
+        const card = document.createElement('div');
+        card.className = 'satker-card';
+        card.innerHTML = `
+          <div class="satker-header" style="border-left-color:${warna};">
+            <div class="satker-title-area"><div class="satker-title">${group.judul_header}</div></div>
+            <div class="satker-summary-right">
+              <div class="summary-line"><span class="lbl">Alokasi POK:</span><span class="val">Rp ${group.pagu_satker}</span></div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Sub-Output / Komponen POK</th><th class="num" style="width:180px;">Alokasi Pagu</th><th class="num" style="width:180px;">Realisasi</th><th class="num" style="width:180px;">Sisa Dana POK</th></tr></thead>
+              <tbody>${rows || '<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:16px;">Tidak ada data POK yang cocok.</td></tr>'}</tbody>
             </table>
           </div>`;
         container.appendChild(card);
