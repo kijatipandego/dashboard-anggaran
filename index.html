@@ -75,7 +75,7 @@
       </div>
       <div class="header-actions">
         <select id="filterKegiatan" class="filter-select">
-          <option value="ALL">Semua Kegiatan (6 Asdep)</option>
+          <option value="ALL">Semua Kegiatan (6 Eselon II)</option>
         </select>
         <button class="btn-export" onclick="exportCSV()">⬇ Unduh Rekap CSV</button>
       </div>
@@ -87,17 +87,17 @@
       <div>Pembaruan Terakhir: <strong id="lastUpdated">Memuat data...</strong></div>
     </div>
     <section class="kpi-grid">
-      <div class="kpi-card kpi-pagu"><div class="kpi-label">Total Pagu Efektif</div><div class="kpi-value" id="kpiPagu">Rp 0</div><div class="kpi-sub" id="kpiPaguSub">6 Asdep / Kegiatan Utama</div></div>
+      <div class="kpi-card kpi-pagu"><div class="kpi-label">Total Pagu Efektif</div><div class="kpi-value" id="kpiPagu">Rp 0</div><div class="kpi-sub" id="kpiPaguSub">6 Eselon II / Kegiatan Utama</div></div>
       <div class="kpi-card kpi-real"><div class="kpi-label">Realisasi Anggaran (SP2D)</div><div class="kpi-value" id="kpiRealisasi" style="color:var(--green);">Rp 0</div><div class="kpi-sub">Dana telah dicairkan</div></div>
       <div class="kpi-card kpi-sisa"><div class="kpi-label">Sisa Anggaran</div><div class="kpi-value" id="kpiSisa" style="color:var(--amber);">Rp 0</div><div class="kpi-sub">Belum terealisasi</div></div>
       <div class="kpi-card kpi-persen"><div class="kpi-label">Capaian Serapan</div><div class="kpi-value" id="kpiPersen" style="color:var(--blue);">0,00%</div><div class="kpi-sub">Persentase terhadap pagu efektif</div></div>
     </section>
     <section class="charts-grid">
-      <div class="chart-box"><div class="chart-title">Perbandingan Pagu vs Realisasi per Asdep / Kegiatan</div><div class="chart-desc">Dalam Miliar Rupiah berdasarkan kode kegiatan (7228 – 7245)</div><div id="barChartArea"></div></div>
+      <div class="chart-box"><div class="chart-title">Perbandingan Pagu vs Realisasi per Eselon II / Kegiatan</div><div class="chart-desc">Dalam Miliar Rupiah berdasarkan kode kegiatan (7228 – 7245)</div><div id="barChartArea"></div></div>
       <div class="chart-box"><div class="chart-title">Komposisi Serapan Keseluruhan</div><div class="chart-desc">Proporsi Realisasi SP2D terhadap Sisa Pagu</div><div id="donutChartArea"></div></div>
     </section>
     <div class="section-bar">
-      <h2>Rincian Anggaran per Asdep & Sub-Output (RO)</h2>
+      <h2>Rincian Anggaran per Eselon II & Sub-Output (RO)</h2>
       <input type="text" id="searchBox" class="search-input" placeholder="Cari kode RO atau uraian..." />
     </div>
     <div id="satkerContainer"></div>
@@ -163,7 +163,7 @@
       const pctTotal = totalPagu > 0 ? (totalReal / totalPagu * 100) : 0;
 
       document.getElementById('kpiPagu').textContent = formatRupiah(totalPagu);
-      document.getElementById('kpiPaguSub').textContent = selectedFilter === 'ALL' ? '6 Asdep Utama (Tanpa 7229.AEG)' : '1 Asdep Terpilih';
+      document.getElementById('kpiPaguSub').textContent = selectedFilter === 'ALL' ? '6 Eselon II Utama (Tanpa 7229.AEG)' : '1 Asdep Terpilih';
       document.getElementById('kpiRealisasi').textContent = formatRupiah(totalReal);
       document.getElementById('kpiSisa').textContent = formatRupiah(totalSisa);
       document.getElementById('kpiPersen').textContent = pctTotal.toFixed(2).replace('.', ',') + '%';
@@ -264,7 +264,7 @@
 
     function exportCSV() {
       if (!globalData) return;
-      let csv = 'Asdep_Kegiatan;Kode_Uraian_RO;Pagu;Realisasi;Persentase\n';
+      let csv = 'Eselon II_Kegiatan;Kode_Uraian_RO;Pagu;Realisasi;Persentase\n';
       (globalData.kelompok_satker || []).forEach(g => {
         (g.rincian || []).forEach(r => {
           csv += `"${g.judul_header}";"${r.nama}";"${r.pagu}";"${r.realisasi}";"${r.persen}"\n`;
